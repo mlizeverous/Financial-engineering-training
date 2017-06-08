@@ -1,0 +1,41 @@
+import talib
+import numpy as np
+import pandas as pd
+
+temp = pd.DataFrame()
+ss = pd.read_excel(r'..\AU.SHF.xls')
+
+MySlowK = ss
+MySlowK = MySlowK.drop('high', 1)
+MySlowK = MySlowK.drop('open', 1)
+MySlowK = MySlowK.drop('low', 1)
+MySlowK = MySlowK.drop('close', 1)
+MySlowK = MySlowK.drop('volume', 1)
+#tempS = pd.DataFrame(columns=['slowK'])
+tempS = []
+high = []
+low = []
+close = []
+
+for index, row in ss.iterrows():
+    for col_name in ss.columns:
+        high = row['high']
+        low = row['low']
+        close = row['close']
+    high = np.array(high)
+    low = np.array(low)
+    close = np.array(close)
+    #print(temp)
+    slowk = talib.STOCH(high,
+                        low,
+                        close,
+                        fastk_period=5,
+                        slowk_period=3,
+                        slowk_matype=0,
+                        slowd_period=3,
+                        slowd_matype=0)
+    slowk = slowk[-1]
+    tempS.append(slowk)
+slowK = pd.Series(tempS)
+MySlowK[slowK] = slowK
+MySlowK.to_excel('result.xls')

@@ -1,0 +1,6 @@
+<TDEProject Name="第一周" Notes="Enter your notes here" Version="1.0">
+  <AT Category="Strategy" Name="#HW1" Status="Closed" />
+  <AT Category="Indicator" Name="myMACD" Status="Closed" />
+  <AT Category="Indicator" Name="myRSI" Status="Closed" />
+  <AT Category="Strategy" Name="#RSI" Status="Closed" />
+</TDEProject>
