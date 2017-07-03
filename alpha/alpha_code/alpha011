@@ -1,0 +1,52 @@
+# Alpha#11: ((rank(ts_max((vwap - close), 3)) + rank(ts_min((vwap - close), 3))) * rank(delta(volume, 3)))
+
+import numpy as np
+import pandas as pd
+from numpy import abs
+from numpy import log
+from numpy import sign
+from scipy.stats import rankdata
+
+import os
+
+path = "../Data"
+files = os.listdir(path)
+store = pd.Panel()
+
+flag = 0
+for file in files:
+    pathN = path+"/"+file
+    new = pd.read_excel(pathN)
+    data = {file: new}
+    if flag == 0:
+        panelTemp = pd.Panel(data)
+    else:
+        panelTemp = panelTemp.join(pd.Panel(data))
+
+    print "temp"
+    flag = flag+1
+
+
+print panelTemp
+
+# 计算alpha时会使用的函数
+def ts_num(df, window=10):
+    return df.rolling(window).sum()
+
+
+def ts_min(df, window=10):
+    return df.rolling(window).min()
+
+
+def ts_max(df, window=10):
+    return df.rolling(window).max()
+
+
+def delta(df, period=1):
+    return df.diff(period)
+
+#表示某股票x值在横截面上的升序排名序号，并将排名归一到[0,1]的闭区间
+def rank(df):
+    return df.rank(axis=1, pct=True)
+
+
